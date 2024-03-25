@@ -237,3 +237,96 @@ export const AdminDashboard = async (req, res) => {
     res.status(500).json({ err: "Internal server Error " });
   }
 };
+
+
+// export const GetUrlcounts =  async (req,res)=>{
+//   try {
+//     const users = await User.find({});
+
+//     // Create an object to store URL counts by user
+//     const urlCountsByUser = {};
+
+//     // Iterate over each user
+//     users.forEach(user => {
+//       // Count the number of URLs for each user
+//       const urlCount = user.urls.length;
+
+//       // Store the URL count for the user
+//       urlCountsByUser[user.lastname] = urlCount;
+      
+//     });
+
+//     // Send the response with URL counts by user
+//     res.status(200).json(urlCountsByUser);
+
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// }
+
+
+export const GetUrlcounts = async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const startDateOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const endDateOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    
+    const dailyCounts = await User.aggregate([
+      { 
+        $unwind: "$urls" 
+      },
+      { 
+        $match: { 
+          "urls.date": { 
+            $gte: startDateOfMonth, 
+            $lte: endDateOfMonth 
+          } 
+        } 
+      },
+      { 
+        $group: { 
+          _id: { 
+            lastname: "$lastname",
+            date: { 
+              $dateToString: { 
+                format: "%Y-%m-%d", 
+                date: "$urls.date" 
+              } 
+            }
+          }, 
+          count: { 
+            $sum: 1 
+          } 
+        } 
+      }
+    ]);
+
+    const monthlyCount = await User.aggregate([
+      { 
+        $unwind: "$urls" 
+      },
+      { 
+        $match: { 
+          "urls.date": { 
+            $gte: startDateOfMonth, 
+            $lte: endDateOfMonth 
+          } 
+        } 
+      },
+      { 
+        $group: { 
+          _id: "$lastname", 
+          count: { 
+            $sum: 1 
+          } 
+        } 
+      }
+    ]);
+
+    res.status(200).json({ dailyCounts, monthlyCount });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}

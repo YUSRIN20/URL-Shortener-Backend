@@ -1,5 +1,5 @@
 import express from 'express'
-import { AdminDashboard, ClickShortUrl, ListAllUsers, Loginuser, RegisterUser, ResetPassword, forgotPassword, generateShortUrl } from '../Controllers/User.controller.js'
+import { AdminDashboard, ClickShortUrl,GetUrlcounts, ListAllUsers, Loginuser, RegisterUser, ResetPassword, forgotPassword, generateShortUrl } from '../Controllers/User.controller.js'
 import authMiddleware from '../Middleware/Auth.Middleware.js'
 
 const userRouter = express.Router()
@@ -11,6 +11,7 @@ userRouter.post('/forgotpassword',forgotPassword)
 userRouter.put('/resetpassword',ResetPassword)
 userRouter.post('/shorturl/:email',generateShortUrl)
 userRouter.get('/shortid/:shortUrl',ClickShortUrl)
+userRouter.get('/geturlcounts',GetUrlcounts)
 
 userRouter.get('/authorized',authMiddleware,AdminDashboard)
 // userRouter.get('/authorized',AdminDashboard)

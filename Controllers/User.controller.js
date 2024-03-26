@@ -238,36 +238,8 @@ export const AdminDashboard = async (req, res) => {
   }
 };
 
-
-// export const GetUrlcounts =  async (req,res)=>{
-//   try {
-//     const users = await User.find({});
-
-//     // Create an object to store URL counts by user
-//     const urlCountsByUser = {};
-
-//     // Iterate over each user
-//     users.forEach(user => {
-//       // Count the number of URLs for each user
-//       const urlCount = user.urls.length;
-
-//       // Store the URL count for the user
-//       urlCountsByUser[user.lastname] = urlCount;
-      
-//     });
-
-//     // Send the response with URL counts by user
-//     res.status(200).json(urlCountsByUser);
-
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// }
-
-
 export const GetUrlcounts = async (req, res) => {
-  try {
+try {
     const currentDate = new Date();
     const startDateOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     const endDateOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
@@ -299,6 +271,12 @@ export const GetUrlcounts = async (req, res) => {
             $sum: 1 
           } 
         } 
+      },
+      {
+        $sort: {
+          "_id.date": -1, //Sortng Date in Descending order
+          "count": -1 // Sorting URL counts in Descending order
+        }
       }
     ]);
 
@@ -321,12 +299,19 @@ export const GetUrlcounts = async (req, res) => {
             $sum: 1 
           } 
         } 
+      },
+      {
+        $sort: {
+          // "_id": 1,
+          "count": 1 // Sorting URL counts in ascending order
+        }
       }
     ]);
 
     res.status(200).json({ dailyCounts, monthlyCount });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
+} catch (error) {
+    res.status(500).json({ error: error.message });
+}
+
+
 }

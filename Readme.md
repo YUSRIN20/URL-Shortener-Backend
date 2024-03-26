@@ -26,7 +26,7 @@ The backend is deployed on Render at [https://url-shortener-backend-vx4e.onrende
 
 ## Frontend
 
-The frontend of this application is built separately and deployed on Netlify. You can find the live demo [here](https://main--url-shortener-web-demo.netlify.app/), and the corresponding GitHub repository [here](https://github.com/YUSRIN20/URL-Shortener-Frontend.git).
+The frontend of this application is built separately and deployed on Netlify. You can find the live demo [here](https://url-shortener-web-demo.netlify.app/), and the corresponding GitHub repository [here](https://github.com/YUSRIN20/URL-Shortener-Frontend.git).
 
 ## Setup Instructions
 

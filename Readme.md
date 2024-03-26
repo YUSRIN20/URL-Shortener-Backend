@@ -48,10 +48,6 @@ The frontend of this application is built separately and deployed on Netlify. Yo
 - **GET /api/user/shortid/:shortUrl**: Redirect to the original URL associated with the short URL.
 - **GET /api/user/geturlcounts**: Get analytics on URL clicks.
 
-## Author
-
-This backend application is developed and maintained by [Yusrin].
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
